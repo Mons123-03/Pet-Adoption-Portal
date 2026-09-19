@@ -1,0 +1,335 @@
+/* Pet Adoption Portal — Dark Theme
+   Simple, clean dark palette with a warm amber accent.
+   Built on top of Bootstrap 5 (data-bs-theme="dark" is set on <html>).
+*/
+
+:root {
+    --bg-page: #14171A;
+    --bg-surface: #1D2126;
+    --bg-surface-2: #262B31;
+    --border-soft: #333A42;
+    --text-main: #E9ECEF;
+    --text-muted: #9AA3AC;
+    --accent: #E3A23C;
+    --accent-hover: #C9891E;
+    --accent-soft: #3A3220;
+    --green: #4C9A6A;
+    --amber-warn: #D9A441;
+    --red: #C25B4A;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-hover); }
+
+/* ===== Navbar ===== */
+.navbar {
+    background-color: #101315 !important;
+    border-bottom: 1px solid var(--border-soft);
+}
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main) !important;
+}
+.navbar-brand svg { flex-shrink: 0; }
+.nav-link {
+    color: var(--text-muted) !important;
+}
+.nav-link:hover, .nav-link.active {
+    color: var(--accent) !important;
+}
+.navbar-text { color: var(--text-muted) !important; }
+
+/* ===== Buttons ===== */
+.btn-amber {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #17191B;
+    font-weight: 600;
+}
+.btn-amber:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #fff;
+}
+.btn-outline-light {
+    border-color: var(--border-soft);
+    color: var(--text-main);
+}
+.btn-outline-light:hover {
+    background-color: var(--bg-surface-2);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.btn-outline-secondary {
+    border-color: var(--border-soft);
+    color: var(--text-muted);
+}
+.btn-outline-secondary:hover {
+    background-color: var(--bg-surface-2);
+    color: var(--text-main);
+    border-color: var(--text-muted);
+}
+.btn-outline-danger { color: var(--red); border-color: var(--red); }
+.btn-outline-danger:hover { background-color: var(--red); color: #fff; }
+.btn-success { background-color: var(--green); border-color: var(--green); }
+
+/* ===== Hero ===== */
+.hero {
+    background: linear-gradient(180deg, #1A1E22 0%, #14171A 100%);
+    border-bottom: 1px solid var(--border-soft);
+    padding: 56px 0;
+    overflow: hidden;
+}
+.hero-illustration {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+    display: block;
+}
+.hero h1 {
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 1.15;
+}
+.hero .lead { color: var(--text-muted); }
+.eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* ===== Cards ===== */
+.card, .form-card, .table-wrap {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+}
+.pet-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    height: 100%;
+}
+.pet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+    border-color: var(--accent);
+}
+.pet-card .card-img-top {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    background: #222;
+}
+.pet-card .card-title { color: var(--text-main); }
+.pet-card .card-text { color: var(--text-muted); font-size: 0.9rem; }
+.pet-card .text-muted { color: var(--text-muted) !important; }
+
+.no-photo-placeholder {
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-surface-2);
+    color: var(--text-muted);
+}
+
+/* ===== Status badges ===== */
+.status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    padding: 4px 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.badge-AVAILABLE { background-color: var(--green); color: #0e1c14; }
+.badge-PENDING { background-color: var(--amber-warn); color: #241a05; }
+.badge-ADOPTED { background-color: #5A6470; color: #fff; }
+.badge-APPROVED { background-color: var(--green); color: #0e1c14; }
+.badge-REJECTED { background-color: var(--red); color: #fff; }
+
+/* ===== Forms ===== */
+.form-card {
+    max-width: 480px;
+    margin: 48px auto;
+    padding: 32px;
+    border-radius: 14px;
+}
+.form-control, .form-select {
+    background-color: var(--bg-surface-2);
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+}
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-surface-2);
+    border-color: var(--accent);
+    color: var(--text-main);
+    box-shadow: 0 0 0 0.2rem rgba(227, 162, 60, 0.2);
+}
+.form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
+.form-label { color: var(--text-muted); font-weight: 600; font-size: 0.88rem; }
+
+/* ===== Filter bar ===== */
+.filter-bar {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+/* ===== Tables ===== */
+.table-wrap { border-radius: 12px; overflow: hidden; }
+.table {
+    color: var(--text-main);
+    margin-bottom: 0;
+}
+.table > :not(caption) > * > * {
+    background-color: transparent;
+    color: var(--text-main);
+    border-bottom-color: var(--border-soft);
+}
+.table-light, thead.table-light {
+    background-color: var(--bg-surface-2) !important;
+}
+.table-light th {
+    background-color: var(--bg-surface-2) !important;
+    color: var(--text-muted) !important;
+    border-bottom-color: var(--border-soft) !important;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.table-hover > tbody > tr:hover > * {
+    background-color: var(--bg-surface-2);
+}
+
+/* ===== Tabs ===== */
+.nav-tabs { border-bottom-color: var(--border-soft); }
+.nav-tabs .nav-link {
+    color: var(--text-muted);
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+}
+.nav-tabs .nav-link.active {
+    color: var(--accent) !important;
+    background: transparent;
+    border-bottom: 2px solid var(--accent);
+}
+
+/* ===== Stat cards (dashboards) ===== */
+.stat-card {
+    background: linear-gradient(160deg, var(--bg-surface-2) 0%, var(--bg-surface) 100%);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 100%;
+}
+.stat-card .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background-color: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.stat-card .icon svg { width: 22px; height: 22px; }
+.stat-card .num {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.1;
+}
+.stat-card .label {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+/* ===== Section headers ===== */
+.section-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.section-sub { color: var(--text-muted); font-size: 0.9rem; }
+
+/* ===== Alerts ===== */
+.alert-danger {
+    background-color: rgba(194, 91, 74, 0.15);
+    border-color: var(--red);
+    color: #F0B7AC;
+}
+.alert-success {
+    background-color: rgba(76, 154, 106, 0.15);
+    border-color: var(--green);
+    color: #A9DABE;
+}
+
+/* ===== Footer ===== */
+footer {
+    background-color: #101315;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 22px 0;
+    margin-top: 60px;
+    border-top: 1px solid var(--border-soft);
+    font-size: 0.85rem;
+}
+
+/* ===== Badges (generic role/category) ===== */
+.badge.bg-secondary {
+    background-color: var(--bg-surface-2) !important;
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border-soft);
+    font-weight: 600;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-muted);
+}
+.empty-state svg { margin-bottom: 12px; opacity: 0.7; }
+
+/* ===== Responsive tweaks ===== */
+@media (max-width: 767px) {
+    .hero { padding: 36px 0; text-align: center; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-illustration { max-width: 260px; margin-top: 24px; }
+    .stat-card { padding: 14px; }
+    .form-card { margin: 24px 16px; padding: 22px; }
+}
+
+@media (max-width: 575px) {
+    .filter-bar .col-md-1, .filter-bar .col-md-2,
+    .filter-bar .col-md-3, .filter-bar .col-md-4 {
+        margin-bottom: 8px;
+    }
+}

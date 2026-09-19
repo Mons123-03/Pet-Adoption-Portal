@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pet Adoption Portal</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg" id="navbar"></nav>
+
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <span class="eyebrow">A home for every good dog, cat, and bird</span>
+                <h1>Find your new<br class="d-none d-md-block"> best friend</h1>
+                <p class="lead mt-3">Browse pets listed by owners and shelters, and submit an adoption request in minutes. Track every step, right through to move-in day.</p>
+                <a href="#browse" class="btn btn-amber btn-lg mt-2">Browse Available Pets</a>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div id="heroArt"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5" id="browse">
+    <h3 class="section-title">Available Pets</h3>
+    <p class="section-sub mb-4">Search and filter to find the right companion for your home.</p>
+
+    <div class="row g-2 mb-4 filter-bar">
+        <div class="col-md-4">
+            <input type="text" id="keyword" class="form-control" placeholder="Search name, breed, description...">
+        </div>
+        <div class="col-md-3">
+            <select id="category" class="form-select">
+                <option value="">All categories</option>
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Bird">Bird</option>
+                <option value="Rabbit">Rabbit</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <input type="number" id="minAge" class="form-control" placeholder="Min age">
+        </div>
+        <div class="col-6 col-md-2">
+            <input type="number" id="maxAge" class="form-control" placeholder="Max age">
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-amber w-100" onclick="loadPets()">Go</button>
+        </div>
+    </div>
+
+    <div id="alertBox"></div>
+    <div class="row g-4" id="petGrid"></div>
+</div>
+
+<footer>Pet Adoption Portal &middot; Java Servlets + JDBC + MySQL &middot; Educational Project</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/common.js"></script>
+<script>
+let currentUser = null;
+document.getElementById('heroArt').innerHTML = HERO_ILLUSTRATION;
+
+async function loadPets() {
+    const params = new URLSearchParams();
+    const keyword = document.getElementById('keyword').value.trim();
+    const category = document.getElementById('category').value;
+    const minAge = document.getElementById('minAge').value;
+    const maxAge = document.getElementById('maxAge').value;
+    if (keyword) params.set('keyword', keyword);
+    if (category) params.set('category', category);
+    if (minAge) params.set('minAge', minAge);
+    if (maxAge) params.set('maxAge', maxAge);
+
+    const grid = document.getElementById('petGrid');
+    grid.innerHTML = '<p class="text-muted">Loading pets...</p>';
+    try {
+        const data = await apiGet('/api/pets?' + params.toString());
+        const pets = data.pets;
+        if (pets.length === 0) {
+            grid.innerHTML = emptyState('No pets match your search yet. Try a different filter.');
+            return;
+        }
+        grid.innerHTML = pets.map(renderPetCard).join('');
+    } catch (err) {
+        showAlert(document.getElementById('alertBox'), err.message);
+    }
+}
+
+function renderPetCard(pet) {
+    const canRequest = currentUser && currentUser.role === 'ADOPTER' && pet.status === 'AVAILABLE';
+    return '' +
+    '<div class="col-sm-6 col-lg-4">' +
+      '<div class="card pet-card position-relative">' +
+        statusBadge(pet.status) +
+        petPhotoOrPlaceholder(pet.image_url) +
+        '<div class="card-body d-flex flex-column">' +
+          '<h5 class="card-title">' + escapeHtml(pet.pet_name) + '</h5>' +
+          '<p class="text-muted mb-1">' + escapeHtml(pet.category) + (pet.breed ? ' &middot; ' + escapeHtml(pet.breed) : '') + (pet.age ? ' &middot; ' + pet.age + ' yr' : '') + '</p>' +
+          '<p class="card-text flex-grow-1">' + escapeHtml(pet.description || 'No description provided.') + '</p>' +
+          (canRequest
+            ? '<button class="btn btn-amber w-100" onclick="requestAdoption(' + pet.pet_id + ', \'' + escapeHtml(pet.pet_name).replace(/'/g, "\\'") + '\')">Request Adoption</button>'
+            : '<p class="text-muted small mb-0">Listed by ' + escapeHtml(pet.owner_name) + '</p>') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+async function requestAdoption(petId, petName) {
+    const message = prompt('Add a short message to the owner about why you would be a great fit for ' + petName + ' (optional):');
+    try {
+        await apiPostForm('/api/request-submit', { pet_id: petId, message: message || '' });
+        showAlert(document.getElementById('alertBox'), 'Adoption request sent for ' + petName + '!', 'success');
+        loadPets();
+    } catch (err) {
+        showAlert(document.getElementById('alertBox'), err.message);
+    }
+}
+
+(async function init() {
+    currentUser = await loadNavbar('home');
+    loadPets();
+})();
+</script>
+</body>
+</html>
